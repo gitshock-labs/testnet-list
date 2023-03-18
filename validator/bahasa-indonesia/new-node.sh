@@ -13,6 +13,15 @@ function CheckBeacon()
 	echo Peer Count: `curl http://localhost:$((9596 + $1))/eth/v1/node/peers 2>/dev/null | jq -r ".meta.count"`
 	curl http://localhost:$((9596 + $1))/eth/v1/node/syncing 2>/dev/null | jq
 }
+function CheckAll()
+{
+	for i in $(seq 0 $(($NodesCount-1))); do
+		CheckGeth $i
+	done
+	for i in $(seq 0 $(($NodesCount-1))); do
+		CheckBeacon $i
+	done
+}
 
 ###################### Setup Environments ######################
 function KillAll() {
@@ -53,7 +62,7 @@ function RunGeth()
 		--authrpc.port $((8551 + $1)) \
 		--port $((30303 + $1)) \
 		--syncmode full \
-		--bootnodes="./execution/bootnodes.txt" \
+		--bootnodes="enode://753cf9d1c9f8e1ccd7338ccc5d9e65b7cef9a345f8044d841a247da4c30155ba206091e322a4b82c366defd97a91b4f09d99113d6edf5a6309f96181cf2046fc@145.145.176.5:30303" \
 		> ./logs/geth_$1.log &
 	sleep 5
 }
@@ -71,10 +80,19 @@ function RunBeacon() {
 	  --port $((9000 + $1)) \
 	  --network.connectToDiscv5Bootnodes true \
 	  --logLevel $LogLevel \
-	  --bootnodes="./consensus/bootnode_enr.txt" \
+	  --bootnodes="enr:-Ly4QDqCYmcgmImaBV3ZurDYJy0gJci4--UFeAn1hKUQy-ooSjI9DSCqlHK84FuPnX26Kvc0lm0En1E5Bb0yuXQFPP4Ch2F0dG5ldHOIAAAAAAAAAACEZXRoMpDymemfQAAAOP__________gmlkgnY0gmlwhJGRsAeJc2VjcDI1NmsxoQNg6ILeJoUPQwZ1-NJzxBrFRasxYMjTkA2xBkF9eRTUiYhzeW5jbmV0cwCDdGNwgiMog3VkcIIjKA" \
 	  > ./logs/beacon_$1.log &
 
 	sleep 1
+	echo Waiting for Beacon enr ...
+	local my_enr=`curl http://localhost:$((9596 + $1))/eth/v1/node/identity 2>/dev/null | jq -r ".data.enr"`
+	while [[ -z $my_enr ]]
+	do
+		sleep 1
+		local my_enr=`curl http://localhost:$((9596 + $1))/eth/v1/node/identity 2>/dev/null | jq -r ".data.enr"`
+	done
+	echo "My Enr = $my_enr"
+	echo $my_enr >> consensus/bootnodes.txt
 }
 function CheckBeacon()
 {
@@ -84,15 +102,24 @@ function CheckBeacon()
 	echo Peer Count: `curl http://localhost:$((9596 + $1))/eth/v1/node/peers 2>/dev/null | jq -r ".meta.count"`
 	curl http://localhost:$((9596 + $1))/eth/v1/node/syncing 2>/dev/null | jq
 }
+function CheckAll()
+{
+	for i in $(seq 0 $(($NodesCount-1))); do
+		CheckGeth $i
+	done
+	for i in $(seq 0 $(($NodesCount-1))); do
+		CheckBeacon $i
+	done
+}
 function RunValidator()
 {
 	Log "Running Validators $1"
 	cp -R consensus/validator_keys consensus/validator_keys_$1
-	nohup ./lodestar validator \
+	nohup lodestar validator \
 	  --dataDir "./data/consensus/$1" \
 	  --beaconNodes "http://127.0.0.1:$((9596 + $1))" \
 	  --suggestedFeeRecipient "0xCaA29806044A08E533963b2e573C1230A2cd9a2d" \
-	  --graffiti "YOLO MERGEDNET GETH LODESTAR" \
+	  --graffiti "Comdex Validators" \
 	  --paramsFile "./consensus/config.yaml" \
 	  --importKeystores "./consensus/validator_keys_$1" \
 	  --importKeystoresPassword "./consensus/validator_keys_$1/password.txt" \
@@ -101,15 +128,21 @@ function RunValidator()
 }
 
 PrepareEnvironment
-set -e
-AdjustTimestamps
 
 for i in $(seq 0 $(($NodesCount-1))); do
 	InitGeth $i
 	RunGeth $i
 done
 
-StoreGethHash
+for i in $(seq 0 $(($NodesCount-1))); do
+	RunBeacon $i
+done
+
+sleep 5
+
+for i in $(seq 0 $(($NodesCount-1))); do
+	RunValidator $i
+done
 
 CheckAll
 

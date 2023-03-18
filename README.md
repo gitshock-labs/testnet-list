@@ -1,10 +1,5 @@
 ![Images](./eth-network/cartenz/apps/danp.png)
 
-### Phase0
-"This month, Testnet Phase1: Cartenzspyramid will be launched."
-
-[Read Documents](eth-network/docs/)
-
 # Testnet Validator Channel
 All Source Repository Testnet Eligible Node Validator Gitshock Finance &amp; Cosmos Network (Coming Soon)
 This guide provides step-by-step instructions on how to participate as a validator on the testnet of the Ethereum and Cosmos networks. Before we get started, it's important to note that participating as a validator requires technical expertise, a good understanding of blockchain technology, and the ability to maintain server infrastructure. 
