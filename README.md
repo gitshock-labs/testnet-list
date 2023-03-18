@@ -1,4 +1,4 @@
-![Images](./eth-network/cartenz/apps/danapoetri_image_midjourney.png)
+![Images](./eth-network/cartenz/apps/danp.png)
 
 ### Phase0
 "This month, Testnet Phase1: Cartenzspyramid will be launched."
