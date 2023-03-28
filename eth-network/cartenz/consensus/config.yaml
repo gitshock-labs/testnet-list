@@ -1,15 +1,33 @@
+# Mainnet config
+
 # Extends the mainnet preset
-# This *could* be 'minimal', but it's not recommended to use because not every client supports 'minimal'
 PRESET_BASE: 'mainnet'
-CONFIG_NAME: testnet # needs to exist because of Prysm. Otherwise it conflicts with mainnet genesis
+
+# Free-form short name of the network that this configuration applies to - known
+# canonical network names include:
+# * 'mainnet' - there can be only one
+# * 'prater' - testnet
+# Must match the regex: [a-z0-9\-]
+CONFIG_NAME: 'cartenzshi'
+
+# Transition
+# ---------------------------------------------------------------
+# Estimated on Sept 15, 2022
+TERMINAL_TOTAL_DIFFICULTY: 0
+# By default, don't use these params
+TERMINAL_BLOCK_HASH: 0x2aa1c5c1fcb143bf048ef08dd59909c27aebd70e0ea4674741fc2637c503e10d
+TERMINAL_BLOCK_HASH_ACTIVATION_EPOCH: 0
 
 # Genesis
 # ---------------------------------------------------------------
 # `2**14` (= 16,384)
-MIN_GENESIS_ACTIVE_VALIDATOR_COUNT: 64
-MIN_GENESIS_TIME: 1678975235
-GENESIS_FORK_VERSION: 0x10000038
-GENESIS_DELAY: 120
+MIN_GENESIS_ACTIVE_VALIDATOR_COUNT: 8
+# Dec 1, 2020, 12pm UTC
+MIN_GENESIS_TIME: 1679988927
+# Mainnet initial fork version, recommend altering for testnets
+GENESIS_FORK_VERSION: 0x00677739
+# 7200 seconds (2 hours)
+GENESIS_DELAY: 60
 
 # Forking
 # ---------------------------------------------------------------
@@ -17,42 +35,31 @@ GENESIS_DELAY: 120
 #  - These may be re-assigned to another fork-version later
 #  - Temporarily set to max uint64 value: 2**64 - 1
 
-# Note: The module runs a merged chain so ALTAIR_FORK_EPOCH, BELLATRIX_FORK_EPOCH and TERMINAL_TOTAL_DIFFICULTY
-# are all hardcoded to zero.
-
 # Altair
-ALTAIR_FORK_VERSION: 0x20000038
+ALTAIR_FORK_VERSION: 0x01677739
 ALTAIR_FORK_EPOCH: 0
-# Merge
-BELLATRIX_FORK_VERSION: 0x30000038
+# Bellatrix
+BELLATRIX_FORK_VERSION: 0x02677739
 BELLATRIX_FORK_EPOCH: 0
-TERMINAL_TOTAL_DIFFICULTY: 0
-# 0x0000...000 indicates that we use TERMINAL_TOTAL_DIFFICULTY instead of a block has to trigger the merge
-TERMINAL_BLOCK_HASH: 0x0000000000000000000000000000000000000000000000000000000000000000
-# NOTE: This is commented out because Nimbus warns us that it's an unrecognized parameter
-TERMINAL_BLOCK_HASH_ACTIVATION_EPOCH: 18446744073709551615
-
 # Capella
-CAPELLA_FORK_VERSION: 0x40000038
-CAPELLA_FORK_EPOCH: 5
-
-# EIP4844
-EIP4844_FORK_VERSION: 0x50000040
-EIP4844_FORK_EPOCH: 18446744073709551615
+CAPELLA_FORK_VERSION: 0x03677739
+CAPELLA_FORK_EPOCH: 18446744073709551615
 
 # Time parameters
 # ---------------------------------------------------------------
 # 12 seconds
-SECONDS_PER_SLOT: 3
-# 5 epochs ~0.5 hours
+SECONDS_PER_SLOT: 12
+# 14 (estimate from Eth1 mainnet)
+SECONDS_PER_ETH1_BLOCK: 3
+# 2**8 (= 256) epochs ~27 hours
 MIN_VALIDATOR_WITHDRAWABILITY_DELAY: 256
 # 2**8 (= 256) epochs ~27 hours
 SHARD_COMMITTEE_PERIOD: 256
-# It's very important that SECONDS_PER_ETH1_BLOCK * ETH1_FOLLOW_DISTANCE is a good amount of time, else
-#  jitter will cause the Beacon nodes to think they're far behind the Eth1 nodes and give up syncing
-SECONDS_PER_ETH1_BLOCK: 3
-ETH1_FOLLOW_DISTANCE: 12
-
+# 2**11 (= 2,048) Eth1 blocks ~8 hours
+ETH1_FOLLOW_DISTANCE: 5
+# These 2 flags are not being applied for some reason
+SLOTS_PER_EPOCH: 32
+EPOCHS_PER_ETH1_VOTING_PERIOD: 2
 
 # Validator cycle
 # ---------------------------------------------------------------
@@ -74,6 +81,7 @@ PROPOSER_SCORE_BOOST: 40
 
 # Deposit contract
 # ---------------------------------------------------------------
+# Ethereum PoW Mainnet
 DEPOSIT_CHAIN_ID: 1881
 DEPOSIT_NETWORK_ID: 1881
 DEPOSIT_CONTRACT_ADDRESS: 0x4242424242424242424242424242424242424242
