@@ -1,14 +1,19 @@
-### Tutorial Menjalankan Validator GETH - LIGHTHOUSE
+### Tutorial Running Validator GETH - LIGHTHOUSE
 
-Membangun Akun Eksekusi Layer Baru Menggunakan Command: 
-geth account new --datadir "/path/folder/akun/anda" 
+Before running the Node, we use the POSIX Nohup (No Hang UP) command which means (Do Not Close) a command in Linux systems that keeps the process running even after exiting the shell or terminal. Nohup prevents the process or job from receiving the SIGHUP (Signal Hang UP) signal. This is a signal sent to the process after closing or exiting the terminal.
 
-> Simpan Public & Keystore anda dengan Aman!
+Building a New Execution Layer Account Using Command:
+geth account new --datadir "/path/folder/your/account" 
 
-Membangun Custom Genesis Block Baru Menggunakan Command: 
-geth --datadir "/path/folder/akun/anda" init /path/folder/berisi/genesis.json
+> Keep your Public & Keystore Safe!
 
-## Menjalankan Eksekusi Layer Milik Anda: 
+Building a New Custom Genesis Block Using Command:
+geth --datadir "/path/folder/your/account" init /path/folder/genesis.json
+
+Build a New JWTSecret Key Using Command:
+openssl rand -hex 32 | tr -d "\n" > "jwt.hex"
+
+## Running the Execution of Your Own Layer:
 nohup geth \
 --http \
 --http.addr 0.0.0.0 \
@@ -21,7 +26,7 @@ nohup geth \
 --http.vhosts=* \
 --http.corsdomain=* \
 --networkid 1881 \
---datadir "data" \
+--datadir "FILL IN THE PATH OF YOUR ACCOUNT FOLDER" \
 --authrpc.port 8551 \
 --port 30303 \
 --metrics \
@@ -43,24 +48,24 @@ nohup geth \
 --graphql \
 --graphql.corsdomain=* \
 --graphql.vhosts=* \
---authrpc.jwtsecret /root/testnet-list/eth-network/jwt.hex \
+--authrpc.jwtsecret /path/file/jwt.hex \
 > /root/testnet-list/eth-network/logs/geth_1.log &
 
-## Menambahkan Peer Node Blockchain Cartenz Menggunakan Command: 
+## Add a Cartenz Blockchain Peer Node Using Command:
 geth attach http://localhost:8545 
 
-Setelah Masuk Kedalam Interaktif Console Geth, Anda Harus Menambahkan Manual Peer & Trusted Peer Minimal 1 Untuk Terkoneksi Dengan Blockchain Dibawah Ini Adalah List Peer Yang Anda Boleh Pilih:
+After entering the Geth Interactive Console, you must add a Manual Peer & Trusted Peer of at least 1 to connect to the blockchain below is a list of peers that you can choose:
 enode://a478d3309e0dc1deb0e2a62e0b892e0d6d931b5dbf83d75c3811d48aa2d814b645567270b6ca220a34c0b9b417def6d5a6ea084dfa1e50e79f20a1808640e710@147.75.71.217:30303
 enode://de68503ed3aa6980fe38834c61be0e2b39e2291e9989e24f308904cbf8c0fb2864d30d5a814dda44aac1fe0626266864a9aa2d6a9f9e1635553c374ed75bb6cd@147.75.71.217:30304
 enode://03fc89e2035b52a609715a15dacad4179f57c0b1e51b3464a931f0fa913b9169d06df1b23515f41e4ed6d9be0e50f33175cbf836e7b6738c62eee00ad45250b0@212.47.241.173:30303
 
-## Mendapatkan Bootnode Didalam Interaktif Console Geth, Untuk Anda Simpan Menggunakan Command: 
+## Get the Bootnode in the Geth Interactive Console, for you to save using Command:
 admin.nodeInfo.enode
 
-Contoh Output: 
+Example Output: 
 "enode://03fc89e2035b52a609715a15dacad4179f57c0b1e51b3464a931f0fa913b9169d06df1b23515f41e4ed6d9be0e50f33175cbf836e7b6738c62eee00ad45250b0@212.47.241.173:30303"
 
-## Menjalankan Consensus Layer Milik Anda: 
+## Running Your Own Consensus Layer:
 nohup lighthouse beacon \
 --http \
 --eth1 \
@@ -83,13 +88,13 @@ nohup lighthouse beacon \
 --enr-tcp-port 9000 \
 --port 9000 \
 --disable-packet-filter \
---graffiti "UBAH SAYA DENGAN NAMA UNIK ANDA" \
+--graffiti "CHANGE ME TO YOUR UNIQUE NAME" \
 > /root/testnet-list/eth-network/logs/validator_1.log &
 
-## Mendapatkan ENR Milik Anda:
+## Get Your ENR:
 curl http://localhost:5052/eth/v1/node/identity | jq 
 
-## Menjalankan Consensus Layer Kedua Milik Anda: 
+## Running Your Second Consensus Layer: 
 nohup lighthouse beacon \
 --http \
 --eth1 \
@@ -116,17 +121,17 @@ nohup lighthouse beacon \
 --boot-nodes="ISI DENGAN ENR YANG SUDAH ANDA DAPAT DARI CONSENSUS LAYER PERTAMA DAN TAMBAHKAN DARI ENR CARTENZ CHAIN" \
 > /root/testnet-list/eth-network/logs/validator_2.log &
 
-> Perhatian! ENR Key Ada Di Dalam Folder consensus/bootnode_enr.txt
+> Attention! ENR Key is in the consensus/bootnode_enr.txt folder
 
-## Membangun Staker Untuk Menjadi Validator Baik Milik Anda: 
-Kunjungi Laman Website Staking Dan Pilih Deposit Lalu Lakukan Deposit Dengan Command: 
+## Build a Staker To Be Your Good Validator: 
+Visit the Staking Website and Select Deposit and Make a Deposit with Command:
 deposit new-mnemonic --num_validators 8 --eth1_withdrawal_address 0x9adddA86C9479C45bD145BBa9FC28146FdF46C83
 
-Contoh Output : "vibrant refuse observe flag shy depth disagree proud race angle vote picnic fancy renew museum bonus arena people thumb there atom tuna abstract negative"
+Example Output : "vibrant refuse observe flag shy depth disagree proud race angle vote picnic fancy renew museum bonus arena people thumb there atom tuna abstract negative"
 
-> Simpan Mnemonic Anda Dengan Aman!
+> Keep Your Mnemonics Safe!
 
-Menjalankan Import Key Milik Anda:
+Executing your Import Key:
 lighthouse account validator import \
 --testnet-dir /root/testnet-list/eth-network/cartenz/consensus \
 --datadir "/root/testnet-list/eth-network/validator" \
@@ -134,7 +139,7 @@ lighthouse account validator import \
 --password-file /root/testnet-list/eth-network/validator_keys/password.txt \
 --reuse-password
 
-## Menjalankan Validator Staker Milik Anda:
+## Running Your Staker Validator:
 nohup lighthouse vc \
 --suggested-fee-recipient 0x9adddA86C9479C45bD145BBa9FC28146FdF46C83 \
 --metrics-address 0.0.0.0 \
