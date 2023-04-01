@@ -4,7 +4,7 @@ CONFIG_NAME: 'testnet'
 # Transition
 # ---------------------------------------------------------------
 TERMINAL_TOTAL_DIFFICULTY: 0
-TERMINAL_BLOCK_HASH: 0x0b5f88614a7bca9bd32789c21d1f03314ab7a35eb23afc9a66395c328a461bec
+TERMINAL_BLOCK_HASH: 0x1d9faa205f57d9b068fb41845cdebcea9275f746e96ec62751e2a47f66fa60d8
 TERMINAL_BLOCK_HASH_ACTIVATION_EPOCH: 0
 
 # Genesis
