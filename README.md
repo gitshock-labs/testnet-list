@@ -1,26 +1,52 @@
-### Final
-"Testnet Final: Cartenzswithdrawalsramid will be launched."
+# Final
+
+**"Testnet Final: Cartenzswithdrawalsramid will be launched."**
 
 ### How to Run? 
 
-`Execution Layer on geth.sh`
+## Execution Layer on geth.sh
+```markdown
 discorduser = change with your username without series number (example: discorduser=parithoshj)
+```
 
-`Consensus Layer on lighthouse.sh` 
+## Consensus Layer on lighthouse.sh 
+```markdown
 address = fill with your address validator [keep it safe or you can use eth2-val-tools to create a new mnemonic] (example: address=0x0000000000000000000000000000d34d)
+```
 
-### Setup Validator Deposit
-`Setup Deposit & Withdrawal` 
+## Setup Validator Deposit 
+
+```markdown
 smin= this is the minimal source validator that you will run, starting from 0 or 1 or according to your taste. (should not exceed the number set from source-max). Default: 0 
-smax= if you want to run multiple validators (more than 64) the source-max section you can add numbers according to the tGTFX balance you have. Default: 1
-wmnemonic= fill your mnemonic or you can generate new using eth2-val-tools to create a new mnemonic (example: eth2-val-tools mnemonic)
-vmnemonic= fill your mnemonic or you can generate new using eth2-val-tools to create a new mnemonic (example: eth2-val-tools mnemonic)
-address= address start with hexadecimal ( 0x )
-privkey= private-key start with hexadecimal ( 0x )
+```
 
-`Validator Layer on validator.sh`
+```markdown
+smax= if you want to run multiple validators (more than 64) the source-max section you can add numbers according to the tGTFX balance you have. Default: 1
+```
+
+```markdown
+wmnemonic= fill your mnemonic or you can generate new using eth2-val-tools to create a new mnemonic (example: eth2-val-tools mnemonic)
+```
+
+```markdown
+vmnemonic= fill your mnemonic or you can generate new using eth2-val-tools to create a new mnemonic (example: eth2-val-tools mnemonic)
+```
+
+```markdown
+address= address start with hexadecimal ( 0x )
+```
+
+```markdown
+privkey= private-key start with hexadecimal ( 0x )
+```
+
+## Validator Layer on validator.sh
+```markdown
 validatoraddr = change with your address from **Setup Validator Deposit** 
+```
+```markdown
 discordgrafiti = this is the validator identity of your node layer, you can use any word but must be coupled to no more than 32 words (example: discordgrafiti=Eth-Gitshock)
+```
 
 # Testnet Validator Channel
 All Source Repository Testnet Eligible Node Validator Gitshock Finance &amp; Cosmos Network (Coming Soon)
