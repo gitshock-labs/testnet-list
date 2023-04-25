@@ -1,7 +1,26 @@
-### Phase0
-"This month, Testnet Phase0: Cartenzspyramid will be launched."
+### Final
+"Testnet Final: Cartenzswithdrawalsramid will be launched."
 
-[Read Documents](eth-network/docs/)
+### How to Run? 
+
+`Execution Layer on geth.sh`
+discorduser = change with your username without series number (example: discorduser=parithoshj)
+
+`Consensus Layer on lighthouse.sh` 
+address = fill with your address validator [keep it safe or you can use eth2-val-tools to create a new mnemonic] (example: address=0x0000000000000000000000000000d34d)
+
+### Setup Validator Deposit
+`Setup Deposit & Withdrawal` 
+smin= this is the minimal source validator that you will run, starting from 0 or 1 or according to your taste. (should not exceed the number set from source-max). Default: 0 
+smax= if you want to run multiple validators (more than 64) the source-max section you can add numbers according to the tGTFX balance you have. Default: 1
+wmnemonic= fill your mnemonic or you can generate new using eth2-val-tools to create a new mnemonic (example: eth2-val-tools mnemonic)
+vmnemonic= fill your mnemonic or you can generate new using eth2-val-tools to create a new mnemonic (example: eth2-val-tools mnemonic)
+address= address start with hexadecimal ( 0x )
+privkey= private-key start with hexadecimal ( 0x )
+
+`Validator Layer on validator.sh`
+validatoraddr = change with your address from **Setup Validator Deposit** 
+discordgrafiti = this is the validator identity of your node layer, you can use any word but must be coupled to no more than 32 words (example: discordgrafiti=Eth-Gitshock)
 
 # Testnet Validator Channel
 All Source Repository Testnet Eligible Node Validator Gitshock Finance &amp; Cosmos Network (Coming Soon)
@@ -16,14 +35,3 @@ The recommended and officially supported operating system to host Gitshock Finan
 4. Basic understanding of Ethereum, including the difference between PoW and PoS consensus algorithms.
 [Read Documents](https://docs.gitshock.com/developers/getting-started)
 
-### Data Availability : 
-1. Full Node : This node stores all the data but does not connect to Consensus. 
-2. Light Node : Light clients conduct data availability sampling on the Data Availability network. 
-3. Consensus Full Node : A Full Node to sync blockchain history.
-
-
-## What is Circle Chain?
-[Read Documents](eth-network/docs/summary.md)
-
-## What is Xarchon Lang?
-[Read Documents](eth-network/docs/xarchon-compilers/xarchon-tutorial.md)

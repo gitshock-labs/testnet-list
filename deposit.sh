@@ -6,8 +6,8 @@ echo "
 ░█▄▄█ ░█─░█ ░█─░█ ─░█── ░█▄▄▄ ░█──▀█ ░█▄▄▄█ 　 ░█▄▄▀ ░█▄▄▄ ░█─── ░█▄▄▄█ ░█▄▄▄█ ▄█▄ ─░█──"
 
 amount=32000000000
-smin=0
-smax=64
+smin=
+smax=
 
 # generate mnemonic using (eth2-val-tools mnemonic and paste here)
 wmnemonic=
